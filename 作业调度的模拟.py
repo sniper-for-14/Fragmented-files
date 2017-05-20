@@ -9,13 +9,13 @@
 from operator import itemgetter
 
 
-# 先来先服务调度模块
+# 先來先服務調度模塊
 def fifo(list):
     list=sorted(list,key=itemgetter(1))
     print("""
-先来先服务调度
+先來先服務調度算法
 *****************************************************************************************
-*\t作业编号\t*\t进入时间\t*\t服务时间\t*\t开始时间\t*\t完成时间\t*\t周转时间\t*\t带权周转时间\t*
+*\t作業編號\t*\t進入時間\t*\t服務時間\t*\t開始時間\t*\t完成時間\t*\t週轉時間\t*\t帶權周轉時間\t*
 *****************************************************************************************""")
     end_list=[];zhou_list=[];dq_zhou_list=[];now=0
     for i in range(len(list)):
@@ -35,19 +35,19 @@ def fifo(list):
 *****************************************************************************************"""
         % (list[i][0], list[i][1], list[i][2],end_list[i]-list[i][2],end_list[i],zhou_list[i],dq_zhou_list[i]))
         avg+=dq_zhou_list[i]
-    print("\n平均带权周转时间："+str(avg/len(list))+"\n")
+    print("\n平均帶權周轉時間："+str(avg/len(list))+"\n")
 
 
 
-# 短任务优先调度模块
+# 短任務優先調度模塊
 def si(list):
     list=sorted(list,key=itemgetter(2))
 
     now=0;i=0;run=False
     print("""
-短任务优先调度
+短任務優先調度
 *****************************************************************************************
-*\t作业编号\t*\t进入时间\t*\t服务时间\t*\t开始时间\t*\t完成时间\t*\t周转时间\t*\t带权周转时间\t*
+*\t作業編號\t*\t進入時間\t*\t服務時間\t*\t開始時間\t*\t完成時間\t*\t週轉時間\t*\t帶權周轉時間\t*
 *****************************************************************************************""")
     while i < len(list):
         # if i==0:
@@ -77,20 +77,15 @@ def si(list):
 *****************************************************************************************"""
               %(i[0],i[1],i[2],i[3],i[4],i[5],i[6]))
         avg+=i[6]
-    print("\n平均带权周转时间："+str(avg/len(list))+"\n")
+    print("\n平均帶權周轉時間："+str(avg/len(list))+"\n")
 
 
 
-# 时间计算模块
-def time():
-    pass
-
-
-# 展示作业状况
+# 展示作業狀態
 def show(list):
     print("""
 *************************************
-*\t作业编号\t*\t进入时间\t*\t服务时间\t*
+*\t作業編號\t*\t進入時間\t*\t服務時間\t*
 *************************************""")
     for i in list:
         print("""*\t  %d  \t*\t  %d  \t*\t  %d  \t*
@@ -101,29 +96,31 @@ def show(list):
 if __name__=="__main__":
     work=[];bo=False
     try:
-        i = int(input('请输入作业数量(默认为4)：'))
+        i = int(input('請輸入作業數量(默認為4)：'))
     except:
         i=4
     while bo==False:
         try:
             for num in range(i):
-                temp = input("请输入作业%s进入时间和运行时常(用空格隔离)：" % str(num + 1)).split()
+                temp = input("請輸入作業%s進入時間和服務時間(用空格隔離)：" % str(num + 1)).split()
                 start = temp[0]
                 ti = temp[1]
                 work.append([num + 1, int(start), int(ti)])
                 del temp, start, ti
                 bo=True
         except:
-            print("输入异常，请全部输入所有数据")
+            print("輸入異常,請重新輸入所有數據")
             bo=False
-
     show(work)
-    typ=input("""
-    
-1. 先来先服务
-2. 短任务优先
-3. 两者比较
-请输入调度类型：""")
+    try:
+        typ = input("""
+
+1. 先來先服務調度算法
+2. 短作業優先調度算法
+3. 兩者比較
+請輸入作業編號(默認執行3)：""")
+    except:
+        typ=3
     if typ=="1":
         fifo(work)
     elif typ=="2":
