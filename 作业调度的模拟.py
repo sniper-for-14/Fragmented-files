@@ -99,20 +99,24 @@ def show(list):
 
 
 if __name__=="__main__":
-    work=[]
+    work=[];bo=False
     try:
         i = int(input('请输入作业数量(默认为4)：'))
     except:
         i=4
-    try:
-        for num in range(i):
-            temp = input("请输入作业%s进入时间和运行时常(用空格隔离)：" % str(num + 1)).split()
-            start = temp[0]
-            ti = temp[1]
-            work.append([num + 1, int(start), int(ti)])
-            del temp, start, ti
-    except:
-        print("输入异常")
+    while bo==False:
+        try:
+            for num in range(i):
+                temp = input("请输入作业%s进入时间和运行时常(用空格隔离)：" % str(num + 1)).split()
+                start = temp[0]
+                ti = temp[1]
+                work.append([num + 1, int(start), int(ti)])
+                del temp, start, ti
+                bo=True
+        except:
+            print("输入异常，请全部输入所有数据")
+            bo=False
+
     show(work)
     typ=input("""
     
