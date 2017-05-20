@@ -13,6 +13,7 @@ from operator import itemgetter
 def fifo(list):
     list=sorted(list,key=itemgetter(1))
     print("""
+先来先服务调度
 *****************************************************************************************
 *\t作业编号\t*\t进入时间\t*\t服务时间\t*\t开始时间\t*\t完成时间\t*\t周转时间\t*\t带权周转时间\t*
 *****************************************************************************************""")
@@ -22,11 +23,12 @@ def fifo(list):
             end_list.append(list[0][1]+list[0][2]);zhou_list.append(end_list[0]-list[0][1]);dq_zhou_list.append(zhou_list[0]/list[0][2])
             now=now+list[0][1]+list[0][2]
         else:
-            if list[i][1]<now:
+            if list[i][1]<=now:
                 end_list.append(now+list[i][2]);zhou_list.append(end_list[i]-list[i][1]);dq_zhou_list.append(zhou_list[i]/list[i][2])
                 now=now+list[i][2]
             else:
-                pass
+                end_list.append(list[i][1]+list[i][2]);zhou_list.append(end_list[i]-list[i][1]);dq_zhou_list.append(zhou_list[i]/list[i][2])
+                now=end_list[i]
     avg=0
     for i in range(len(list)):
         print("""*\t  %d  \t*\t  %d  \t*\t  %d  \t*\t  %d  \t*\t  %d  \t*\t  %d  \t*\t  %.2f  \t*
@@ -40,20 +42,35 @@ def fifo(list):
 # 短任务优先调度模块
 def si(list):
     list=sorted(list,key=itemgetter(2))
-    now=0
+
+    now=0;i=0;run=False
     print("""
+短任务优先调度
 *****************************************************************************************
 *\t作业编号\t*\t进入时间\t*\t服务时间\t*\t开始时间\t*\t完成时间\t*\t周转时间\t*\t带权周转时间\t*
 *****************************************************************************************""")
-    for i in range(len(list)):
-        if i==0:
-            list[i].append(list[i][1]);list[i].append(list[i][3]+list[i][2]);list[i].append(list[i][4]-list[i][1]);list[i].append(list[i][5]/list[i][2])
-            now+=list[0][4]
+    while i < len(list):
+        # if i==0:
+        #     list[i].append(list[i][1]);list[i].append(list[i][3]+list[i][2]);list[i].append(list[i][4]-list[i][1]);list[i].append(list[i][5]/list[i][2])
+        #     now+=list[0][4];i+=1
+        # else:
+        if list[i][1]<=now:
+            list[i].append(list[i-1][4]);list[i].append(list[i][2]+list[i][3]);list[i].append(list[i][4]-list[i][1]);list[i].append(list[i][5]/list[i][2])
+            i += 1
         else:
-            if list[i][1]<now:
-                list[i].append(list[i-1][4]);list[i].append(list[i][2]+list[i][3]);list[i].append(list[i][4]-list[i][1]);list[i].append(list[i][5]/list[i][2])
-            else:
-                pass
+            mi=list[i];t=0;m=0
+            for a in list:
+                if a[1]<mi[1]:
+                    m=t
+                    mi=a
+                # list.insert(i,list[m])
+                # del list[t+1]
+                t+=1
+            list.insert(i,list[m])
+            del list[m+1]
+            list[i].append(list[i][1]);list[i].append(list[i][3] + list[i][2]);list[i].append(list[i][4] - list[i][1]);list[i].append(list[i][5] / list[i][2]);now += list[0][4];i += 1
+
+
     avg=0
     for i in list:
         print("""*\t  %d  \t*\t  %d  \t*\t  %d  \t*\t  %d  \t*\t  %d  \t*\t  %d  \t*\t  %.2f  \t*
@@ -110,4 +127,3 @@ if __name__=="__main__":
     else:
         fifo(work)
         si(work)
-
