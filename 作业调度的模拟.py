@@ -37,7 +37,7 @@ def fifo(list):
         avg+=dq_zhou_list[i]
     print("\n平均帶權周轉時間："+str(avg/len(list))+"\n")
 
-
+ 
 
 # 短任務優先調度模塊
 def si(list):
